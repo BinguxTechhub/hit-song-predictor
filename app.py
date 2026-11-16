@@ -10,7 +10,7 @@ df = pd.read_csv("data/spotify_tracks.csv")
 
 st.set_page_config(page_title="Hit Song Predictor", page_icon="🎵")
 st.title("🎵 Hit Song Predictor")
-st.markdown("Adjust the sliders or paste a Spotify track ID to auto-fill them.")
+st.markdown("Type in your song's characteristics or paste a Spotify track ID to auto-fill them.")
 
 st.sidebar.header("Song Features")
 track_id_input = st.sidebar.text_input("Enter Spotify Track ID")
@@ -40,13 +40,13 @@ defaults = st.session_state.get('loaded_values', {
 user_input = {}
 for feat in feature_names:
     if feat == 'duration_ms':
-        user_input[feat] = st.sidebar.slider(f"{feat} (ms)", 30000, 600000, int(defaults.get(feat, 200000)), step=1000)
+        user_input[feat] = st.sidebar.number_input(f"{feat} (ms)", min_value=30000, max_value=600000, value=int(defaults.get(feat, 200000)), step=1000)
     elif feat == 'tempo':
-        user_input[feat] = st.sidebar.slider(f"{feat} (BPM)", 40.0, 220.0, float(defaults.get(feat, 120.0)), step=1.0)
+        user_input[feat] = st.sidebar.number_input(f"{feat} (BPM)", min_value=40.0, max_value=220.0, value=float(defaults.get(feat, 120.0)), step=1.0)
     elif feat == 'loudness':
-        user_input[feat] = st.sidebar.slider(f"{feat} (dB)", -60.0, 0.0, float(defaults.get(feat, -10.0)), step=0.1)
+        user_input[feat] = st.sidebar.number_input(f"{feat} (dB)", min_value=-60.0, max_value=0.0, value=float(defaults.get(feat, -10.0)), step=0.1)
     else:
-        user_input[feat] = st.sidebar.slider(feat, 0.0, 1.0, float(defaults.get(feat, 0.5)), step=0.01)
+        user_input[feat] = st.sidebar.number_input(feat, min_value=0.0, max_value=1.0, value=float(defaults.get(feat, 0.5)), step=0.01)
 
 if st.sidebar.button("🎯 Predict Hit Potential"):
     input_df = pd.DataFrame([user_input])
